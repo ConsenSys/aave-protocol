@@ -9,6 +9,9 @@ import "../configuration/LendingPoolAddressesProvider.sol";
 
 contract LendingPoolAddressesProviderVerification is LendingPoolAddressesProvider, MythXVerificationUtils {
 
+    address private ___mythx_var_prevs_LendingPool;
+    address private ___mythx_var_prevs_LendingPoolCore;
+
     /* Ownership */
     
     address private ___mythx_var_prevs_owner;
@@ -27,6 +30,9 @@ contract LendingPoolAddressesProviderVerification is LendingPoolAddressesProvide
     function _mythx_ContractInvariant_snapshot() internal {
         /* Ownership */
 
+        ___mythx_var_prevs_LendingPool = getAddress("LENDING_POOL");
+        ___mythx_var_prevs_LendingPoolCore = getAddress("LENDING_POOL_CORE");
+
         ___mythx_var_prevs_owner = owner();
     }
 
@@ -35,6 +41,14 @@ contract LendingPoolAddressesProviderVerification is LendingPoolAddressesProvide
 
         if (owner() != ___mythx_var_prevs_owner && msg.sender != ___mythx_var_prevs_owner) {
             emit AssertionFailed('Owner address was modified but sender is not the owner');
+        }
+
+        if (___mythx_var_prevs_LendingPool != getAddress("LENDING_POOL")) {
+            emit AssertionFailed('LendingPool address was modified but sender is not the owner');
+        }
+
+        if (___mythx_var_prevs_LendingPoolCore != getAddress("LENDING_POOL_CORE")) {
+            emit AssertionFailed('LendingPoolCore address was modified but sender is not the owner');
         }
 
     }
